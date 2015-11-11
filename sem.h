@@ -3,38 +3,51 @@
 
 #include "threads.h"
 
-int semaphore;
-TCB_t* RunSemQ = 0;
+typedef struct Semaphore_t
+{
+	int semaphore;
+	TCB_t* RunSemQ;
+} Semaphore_t;
+
+
+Semaphore_t* NewSem()
+{
+	Semaphore_t* newSem = (Semaphore_t*) malloc(sizeof(Semaphore_t));
+	newSem->semaphore = 0;
+	newSem->RunSemQ = 0;
+	
+	return newSem;
+}
 
 //void InitSem(int* semaphore, int* value)
-void InitSem(int* value)
+void InitSem(Semaphore_t* sem, int value)
 {
-	semaphore = *value;
+	sem->semaphore = value;
 }
 
 //void P(int* semaphore)
-void P()
+void P(Semaphore_t* sem)
 {
-	if(semaphore == 0)
+	if(sem->semaphore == 0)
 	{
 		// Block the process in the queue associated with the semaphore
 	}
 	else
 	{
-		semaphore--;
+		sem->semaphore--;
 	}
 	
 }
 
 //void V(int* semaphore)
-void V()
+void V(Semaphore_t* sem)
 {
-	if(semaphore <= 0)
+	if(sem->semaphore <= 0)
 	{
 		// Take PCB out of the semaphore queue and put it in run queue. "yield" to next runnable process
 	}
 	
-	semaphore++;	// Increment semaphore 
+	sem->semaphore++;	// Increment semaphore 
 }	
 
 
