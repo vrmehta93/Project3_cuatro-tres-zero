@@ -5,7 +5,7 @@
 
 //Globals
 
-#define SEMAPHORE_SIZE 1
+#define SEMAPHORE_SIZE 2
 
 int totalProd=0;
 Semaphore_t* semaphore;
@@ -57,7 +57,7 @@ void thread1(void)//Calculates factory 1's production
 		
 		V(semaphore);
 //		yield();
-//		sleep(1);
+		sleep(1);
 	}
 	
 	return;

@@ -29,19 +29,16 @@ void InitSem(Semaphore_t* sem, int value)
 void P(Semaphore_t* sem)
 {
 	TCB_t* blocked;
-
+	sem->semaphore--;
 	if(sem->semaphore < 0)
 	{
 		// Block the process in the queue associated with the semaphore
-		blocked=Runq;//save the current process away
-		DelQueue(&RunQ)//remove from queue
+		blocked=RunQ;//save the current process away
+		DelQueue(&RunQ);//remove from queue
 		AddQueue(&sem->RunSemQ,blocked);//Add thread to end of queue
 		swapcontext(&(blocked->context),&(RunQ->context));
 	}
-	else
-	{
-		sem->semaphore--;
-	}
+
 	
 }
 
@@ -54,9 +51,8 @@ void V(Semaphore_t* sem)
 	{
 		// Take PCB out of the semaphore queue and put it in run queue. "yield" to next runnable process
 		AddQueue(&RunQ,DelQueue(&sem->RunSemQ));
-		yield();
 	}
-	
+	yield();
 }	
 
 
